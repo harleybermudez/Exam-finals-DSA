@@ -1,0 +1,270 @@
+/*Hospital admission systemmmmm yasss*/ 
+//BErmudez
+//cs1d
+//data structures and algorithms✨
+const services = {
+    Laboratory: [
+        { name: "Blood Test", desc: "Complete Blood Count", price: 1050 },
+        { name: "Urine Test", desc: "Routine Urinalysis", price: 360 },
+        { name: "X-Ray", desc: "Chest Radiograph", price: 1500 },
+        { name: "ECG", desc: "Electrocardiogram", price: 1200 },
+        { name: "COVID-19 Test", desc: "Rapid Antigen", price: 2100 }
+    ],
+    Checkups: [
+        { name: "General Checkup", desc: "Doctor Consultation", price: 1500 },
+        { name: "Pediatric Checkup", desc: "Children's Health Check", price: 1800 },
+        { name: "Cardiology", desc: "Heart Specialist", price: 3000 },
+        { name: "Dermatology", desc: "Skin Specialist", price: 2400 },
+        { name: "Orthopedic", desc: "Bone & Joint Check", price: 2700 }
+    ],
+    Operations: [
+        { name: "Appendectomy", desc: "Appendix Removal", price: 60000 },
+        { name: "Cataract Surgery", desc: "Eye Lens Replacement", price: 45000 },
+        { name: "Tonsillectomy", desc: "Tonsils Removal", price: 54000 },
+        { name: "Hernia Repair", desc: "Fixing Hernia", price: 66000 },
+        { name: "Gallbladder Surgery", desc: "Cholecystectomy", price: 75000 },
+        { name: "Cesarean Section", desc: "C-Section Delivery", price: 105000 },
+        { name: "Coronary Bypass", desc: "Heart Bypass Surgery", price: 900000 },
+        { name: "Mastectomy", desc: "Breast Removal Surgery", price: 180000 },
+        { name: "Thyroidectomy", desc: "Thyroid Gland Removal", price: 120000 },
+        { name: "Prostatectomy", desc: "Prostate Removal", price: 150000 }
+    ],
+    Imaging: [
+        { name: "MRI", desc: "Magnetic Resonance Imaging", price: 27000 },
+        { name: "CT Scan", desc: "Computed Tomography Scan", price: 21000 },
+        { name: "Ultrasound", desc: "Abdominal Ultrasound", price: 3600 },
+        { name: "Mammography", desc: "Breast X-ray", price: 4500 },
+        { name: "Bone Densitometry", desc: "Bone Density Test", price: 6000 }
+    ],
+    Therapy: [
+        { name: "Physical Therapy", desc: "Rehabilitation Session", price: 1800 },
+        { name: "Occupational Therapy", desc: "Daily Living Skills", price: 2100 },
+        { name: "Speech Therapy", desc: "Speech & Language Session", price: 1950 },
+        { name: "Respiratory Therapy", desc: "Breathing Treatment", price: 2400 },
+        { name: "Hydrotherapy", desc: "Water Therapy", price: 2700 }
+    ]
+};
+// adminsion info
+//============================================================================================================
+function getPatientInfo() {
+    alert("🔹 Welcmoe to 50/50 Hospital Patient Admission 🔹");
+    alert("You will be asked to enter your Name, Date of Birth, and Address. Please prepare this information.");
+    // Name
+    alert("Let's start with your Name.");
+    let firstName, middleName, lastName;
+    do {
+        firstName = prompt("Please Enter First Name:").toUpperCase();
+        if (!firstName) alert("First Name cannot be empty.");
+    } while (!firstName);
+    do {
+        middleName = prompt("Please Enter Middle Name:").toUpperCase();
+        if (!middleName) alert("Middle Name cannot be empty.");
+    } while (!middleName);
+    do {
+        lastName = prompt("Please Enter Last Name:").toUpperCase();
+        if (!lastName) alert("Last Name cannot be empty.");
+    } while (!lastName);
+    const name = `${firstName} ${middleName} ${lastName}`;
+    // Date of Birth 
+    alert("Now kindly, enter your Date of Birth.");
+    let month, day, year;
+    do {
+        month = Number(prompt("Please Enter Birth Month (MM):"));
+    } while (isNaN(month) || month < 1 || month > 12);
+    do {
+        day = Number(prompt("Please Enter Birth Day (DD):"));
+    } while (isNaN(day) || day < 1 || day > 31);
+    do {
+        year = Number(prompt("Please Enter Birth Year (YYYY):"));
+    } while (isNaN(year) || String(year).length !== 4);
+    let dateOfBirth;
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    dateOfBirth = month + "/" + day + "/" + year;
+    // Address
+    alert("Finally please, enter your Address.");
+    let street, barangay, city, province, zip;
+    do {
+        street = prompt("Enter Street:").toUpperCase();
+        if (!street) alert("Street cannot be empty.");
+    } while (!street);
+    do {
+        barangay = prompt("Enter Barangay:").toUpperCase();
+        if (!barangay) alert("Barangay cannot be empty.");
+    } while (!barangay);
+    do {
+        city = prompt("Enter City:").toUpperCase();
+        if (!city) alert("City cannot be empty.");
+    } while (!city);
+    do {
+        province = prompt("Enter Province:").toUpperCase();
+        if (!province) alert("Province cannot be empty.");
+    } while (!province);
+    do {
+        zip = prompt("Enter ZIP Code:");
+        if (!zip) alert("ZIP Code cannot be empty.");
+    } while (!zip);
+    const address = `${street}, ${barangay}, ${city}, ${province}, ${zip}`;
+    const gender = getGender();
+    return { name, dateOfBirth, address, gender };
+}
+function getGender() {
+    let gender = prompt("Enter Gender (M=Male / F=Female):").toUpperCase();
+    while (!['M', 'F'].includes(gender)) {
+        alert("❌ Invalid gender. Please enter M or F.");
+        gender = prompt("Enter Gender (M=Male / F=Female):").toUpperCase();
+    }
+    return gender === 'M' ? "Male" : "Female";
+}
+// slecting service
+//==================================================================================
+function selectService(availableServices) {
+    while (true) {
+        let categories = Object.keys(services);
+        let categoryList = "Available Categories:\n";
+        categories.forEach((cat, idx) => {
+            categoryList += `${idx + 1}. ${cat}\n`;
+        });
+        categoryList += "0. Done\n";
+        let categoryInput = prompt(categoryList + "\nEnter the number of your choice:");
+        if (!categoryInput) continue;
+        let categoryIndex = Number(categoryInput);
+        let matchedCategory = null;
+        switch (categoryIndex) {
+            case 1:
+                matchedCategory = "Laboratory";
+                break;
+            case 2:
+                matchedCategory = "Checkups";
+                break;
+            case 3:
+                matchedCategory = "Operations";
+                break;
+            case 4:
+                matchedCategory = "Imaging";
+                break;
+            case 5:
+                matchedCategory = "Therapy";
+                break;
+            case 0:
+                return; 
+            default:
+                alert("❌ Invalid category. Try again.");
+                continue;
+        }
+        let serviceArr = services[matchedCategory];
+        let serviceList = `\n🧾 ${matchedCategory} Services:\n`;
+        serviceArr.forEach((item, i) => {
+            serviceList += `${i + 1}. ${item.name} - ${item.desc} (${item.price})\n`;
+        });
+        serviceList += "0. Done\n";
+        let sel = Number(prompt(
+            serviceList +
+            `\nEnter service number to add (1-${serviceArr.length}) or 0 to finish:`
+        ));
+        if (sel === 0) continue; 
+        if (sel >= 1 && sel <= serviceArr.length) {
+            availableServices.push(serviceArr[sel - 1]);
+            alert(`✅ ${serviceArr[sel - 1].name} added.`);
+        } else {
+            alert("❌ Invalid selection.");
+        }
+    }
+}
+// removing servuce
+//=================================================================================
+function removeService(selectedServices) {
+    while (true) {
+        if (selectedServices.length === 0) {
+            alert("🛑 No services to remove.");
+            break;
+        }
+        let currentList = "\n📋 Current Selected Services:\n";
+        selectedServices.forEach((s, i) => {
+            currentList += `${i + 1}. ${s.name} - ${s.price} PHP\n`;
+        });
+        currentList += "0. Done\n";
+        let choice = prompt(
+            currentList +
+            "\nEnter number to remove or 0 to finish:"
+        );
+        if (choice === "0") break;
+
+        let idx = parseInt(choice);
+        if (idx >= 1 && idx <= selectedServices.length) {
+            let removed = selectedServices.splice(idx - 1, 1);
+            alert(`❌ Removed: ${removed[0].name}`);
+        } else {
+            alert("❌ Invalid number.");
+        }
+    }
+}
+//RECEIPT
+//======================================================================================
+function generateReceipt(patient, selectedServices) {
+    let receipt = "\n==============================\n";
+    receipt += "🏥 50/50 Hospital Admission Receipt\n";
+    receipt += "==============================\n";
+    receipt += `👤 Name: ${patient.name}\n`;
+    receipt += `🎂 Date of Birth: ${patient.dateOfBirth}\n`;
+    receipt += `🏠 Address: ${patient.address}\n`;
+    receipt += `⚧️ Gender: ${patient.gender}\n`;
+
+    receipt += "\n💉 Services Availed:\n";
+    let subtotal = 0;
+    selectedServices.forEach((s, i) => {
+        receipt += `${i + 1}. ${s.name} - ${s.price} PHP\n`;
+        subtotal += s.price;
+    });
+
+    //discount if senior (neil)
+    let discount = 0;
+    let hasSenior;
+    while (hasSenior !== "1" && hasSenior !== "2") {
+        hasSenior = prompt("Is the patient a Senior Citizen or PWD?\n1. Yes\n2. No");
+    }
+    if (hasSenior === "1") {
+        discount = Math.round(subtotal * 0.20); // 20% discount
+        receipt += `\n🎉 Senior/PWD Discount (20%): -${discount} PHP`;
+    }
+    receipt += `\nSubtotal: ${subtotal} PHP`;
+    let total = subtotal - discount;
+    receipt += `\n------------------------------\n`;
+    receipt += `💰 Total Amount Due: ${total} PHP\n`;
+    // mode of payment
+    let paymentMode = "";
+    while (paymentMode !== "cash" && paymentMode !== "card") {
+        let mode = prompt("Mode of Payment:\n1. Cash\n2. Card");
+        if (mode === "1") paymentMode = "cash";
+        else if (mode === "2") paymentMode = "card";
+    }
+    if (paymentMode === "card") {
+        let bank = prompt("Enter Bank Name:");
+        let cardNumber = prompt("Enter Card Number:");
+        let cardHolder = prompt("Enter Card Holder Name:");
+        receipt += `\n💳 Paid via CARD\nBank: ${bank}\nCard Number: ${cardNumber}\nCard Holder: ${cardHolder}\n`;
+    } else {
+        receipt += `\n💵 Paid via CASH\n`;
+    }
+    receipt += "✅ Payment Status: PAID\n";
+    receipt += "🧾 Thank you for trusting 50/50 Hospital. Get well soon!";
+    alert(receipt);
+}
+// the wprk flow
+//=========================================================================================
+function runHospitalAdmission() {
+    let patient = getPatientInfo();
+    let selectedServices = [];
+    selectService(selectedServices);
+    if (selectedServices.length > 0) {
+        let changes;
+        while (changes !== "1" && changes !== "2") {
+            changes = prompt("Do you want to remove any services?\n1. Yes\n2. No");
+        }
+        if (changes === "1") {
+            removeService(selectedServices);
+        }
+    }
+    generateReceipt(patient, selectedServices);
+}
+runHospitalAdmission();
